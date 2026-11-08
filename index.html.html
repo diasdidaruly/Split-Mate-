@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SPLIT-MATE</title>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--fg:#000;--muted:#555;--line:#e3e3e3;--btn:#000;--btn-fg:#fff;--ok:#1a7f37;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111;--fg:#f5f5f5;--muted:#a8a8a8;--line:#2c2c2c;--btn:#f5f5f5;--btn-fg:#111;--ok:#5fd37f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111;--fg:#f5f5f5;--muted:#a8a8a8;--line:#2c2c2c;--btn:#f5f5f5;--btn-fg:#111;--ok:#5fd37f;color-scheme:dark}
+html{scroll-behavior:smooth;scroll-padding-top:calc(90px + env(safe-area-inset-top,0px))}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:'Jost','Futura','Century Gothic',Arial,sans-serif;font-weight:300;font-size:18px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(--bg);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 32px;flex-wrap:wrap}
+.logo{font-weight:500;font-size:22px;letter-spacing:.02em;color:var(--fg);text-decoration:none}
+nav{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+nav .uni{font-weight:500;font-size:15px;margin-right:6px}
+.pill{display:inline-block;border:2px solid var(--fg);border-radius:999px;padding:10px 26px;font:500 16px 'Jost',Arial,sans-serif;color:var(--fg);background:transparent;text-decoration:none;cursor:pointer}
+.pill.solid{background:var(--btn);color:var(--btn-fg);border-color:var(--btn)}
+nav .pill{padding:8px 20px;font-size:15px;border-width:1px}
+.pill:focus-visible,input:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #2b7cff;outline-offset:2px}
+.lang{background:none;border:0;color:var(--fg);font:500 16px 'Jost',Arial,sans-serif;display:flex;align-items:center;gap:6px;cursor:default}
+.hero{text-align:center;padding:110px 20px 90px}
+.hero h1{margin:0;font-weight:600;font-size:clamp(56px,11vw,120px);line-height:1;letter-spacing:.01em}
+.hero p{margin:44px 0 0;font-size:20px;color:var(--muted)}
+.rule{border:0;height:1px;background:linear-gradient(90deg,transparent,var(--line) 15%,var(--line) 85%,transparent);max-width:760px;margin:0 auto}
+.links{display:flex;flex-direction:column;align-items:center;gap:26px;padding:56px 20px}
+.links .pill{min-width:190px;text-align:center;padding:16px 34px;font-size:17px}
+section.form{max-width:520px;margin:0 auto;padding:64px 20px}
+label,.lbl{display:block;font-size:16px;margin:0 0 8px;font-weight:400}
+.hint{font-size:13px;color:var(--muted);margin:-4px 0 12px;font-weight:300}
+input[type=text],input[type=number]{width:100%;height:50px;border:1.5px solid var(--fg);border-radius:999px;background:transparent;color:var(--fg);padding:0 22px;font:300 17px 'Jost',Arial,sans-serif;margin-bottom:22px}
+input::placeholder{color:var(--muted)}
+.total{margin:0 0 28px;font-size:16px}
+.upload{margin-bottom:24px}
+.upload input{position:absolute;opacity:0;width:1px;height:1px}
+.upload .btn{display:inline-block;background:var(--btn);color:var(--btn-fg);padding:10px 20px;font:500 16px 'Jost',Arial,sans-serif;cursor:pointer}
+.upload input:focus-visible+.btn{outline:3px solid #2b7cff;outline-offset:2px}
+.fname{margin-left:12px;font-size:14px;color:var(--muted)}
+fieldset{border:0;padding:0;margin:0 0 26px}
+legend{padding:0;font-size:16px;font-weight:400;margin-bottom:12px}
+.radio{display:flex;align-items:center;gap:12px;margin:0 0 10px;font-size:15px;cursor:pointer}
+.radio input{appearance:none;width:22px;height:22px;border:2px solid var(--fg);border-radius:50%;margin:0;display:grid;place-content:center;flex:none;cursor:pointer}
+.radio input::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--fg);transform:scale(0)}
+.radio input:checked::before{transform:scale(1)}
+.submit{background:var(--btn);color:var(--btn-fg);border:0;border-radius:999px;padding:14px 38px;font:600 17px 'Jost',Arial,sans-serif;letter-spacing:.03em;cursor:pointer}
+.msg{margin-top:18px;font-size:15px;min-height:1.5em}
+.msg.ok{color:var(--ok)}.msg.err{color:#d33}
+.about{max-width:960px;margin:0 auto;padding:72px 24px 40px;text-align:center}
+.about h2{margin:0;font-size:21px;font-weight:600}
+.about p{margin:2px 0}
+.help{max-width:960px;margin:40px auto 0;padding:0 24px 90px}
+.help h3{margin:0 0 4px;font-size:19px;font-weight:600}
+.help ul{margin:0;padding-left:22px}
+footer{border-top:1px solid var(--line);text-align:center;padding:26px 20px;font-size:14px;color:var(--muted)}
+@media (max-width:640px){header{padding:14px 18px}nav .uni{display:none}.hero{padding:70px 16px 60px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="#top">SPLIT-MATE</a>
+  <nav aria-label="Main">
+    <span class="uni">Astana IT University</span>
+    <a class="pill solid" href="#divide">Divide the amount</a>
+    <a class="pill" href="#about">About us</a>
+    <span class="lang" aria-label="Language: English"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19M12 2.5c3 3 3 16 0 19M12 2.5c-3 3-3 16 0 19"/></svg>EN</span>
+  </nav>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <h1>SPLIT-MATE</h1>
+    <p>Manage joint expenses and debts in a couple of clicks</p>
+  </div>
+  <hr class="rule">
+  <div class="links">
+    <a class="pill" href="#about">About us</a>
+    <a class="pill" href="#divide">Divide the amount</a>
+    <a class="pill" href="#purchase">Purchase</a>
+  </div>
+  <hr class="rule">
+
+  <section class="form" id="divide" aria-labelledby="divide-t">
+    <h2 id="divide-t" class="lbl" style="font-size:0;margin:0;height:0;overflow:hidden">Divide the amount</h2>
+    <form id="f1" novalidate>
+      <label for="spent">What was spent on</label>
+      <input type="text" id="spent" autocomplete="off">
+      <label for="amount">Total amount, tg</label>
+      <input type="number" id="amount" min="0" step="any" inputmode="decimal">
+      <label for="people">Number of people</label>
+      <input type="number" id="people" min="1" step="1" inputmode="numeric">
+      <p class="total" aria-live="polite">Amount per person: <span id="per">0</span>tg</p>
+      <div class="upload">
+        <span class="lbl">Receipt</span>
+        <p class="hint">You can attach a receipt electronic/paper receipt</p>
+        <label><input type="file" id="r1" accept="image/*,application/pdf"><span class="btn">Upload receipt</span></label><span class="fname" id="n1"></span>
+      </div>
+      <button class="submit" type="submit">SUBMIT</button>
+      <p class="msg" id="m1" role="status"></p>
+    </form>
+  </section>
+  <hr class="rule">
+
+  <section class="form" id="purchase" aria-labelledby="purchase-t">
+    <h2 id="purchase-t" class="lbl" style="font-size:0;margin:0;height:0;overflow:hidden">Purchase</h2>
+    <form id="f2" novalidate>
+      <label for="item">Purchase</label>
+      <input type="text" id="item" autocomplete="off">
+      <input type="number" id="cost" min="0" step="any" inputmode="decimal" placeholder="Cost" aria-label="Cost">
+      <div class="upload">
+        <span class="lbl">Cheque</span>
+        <p class="hint">You can attach a receipt electronic/paper receipt</p>
+        <label><input type="file" id="r2" accept="image/*,application/pdf"><span class="btn">Upload receipt</span></label><span class="fname" id="n2"></span>
+      </div>
+      <fieldset>
+        <legend>Select a category</legend>
+        <label class="radio"><input type="radio" name="cat" value="Groceries">Groceries</label>
+        <label class="radio"><input type="radio" name="cat" value="Food">Food</label>
+        <label class="radio"><input type="radio" name="cat" value="Household items">Household items</label>
+        <label class="radio"><input type="radio" name="cat" value="Subscription to services">Subscription to services</label>
+        <label class="radio"><input type="radio" name="cat" value="Utilities">Utilities</label>
+      </fieldset>
+      <button class="submit" type="submit">SUBMIT</button>
+      <p class="msg" id="m2" role="status"></p>
+    </form>
+  </section>
+  <hr class="rule">
+
+  <section class="about" id="about">
+    <h2>Transparent finances and convenient joint accounting — without unnecessary hassle</h2>
+    <p>It is a website for tracking the debts and total expenses of roommates and colleagues.</p>
+    <p>Our website solves routine tasks like the problem of forgotten debts, inconvenient reminders and confusion regarding general expenses and so on</p>
+  </section>
+  <section class="help">
+    <h3>How our project will help:</h3>
+    <ul>
+      <li>Forgotten debts and awkward reminders to loved ones</li>
+      <li>Lost paper receipts, which make it difficult to remember who paid for what.</li>
+      <li>Lack of up-to-date information about recent transactions and balance.</li>
+    </ul>
+  </section>
+</main>
+<footer>SPLIT-MATE · Astana IT University</footer>
+
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  function fmt(n){return (Math.round(n*100)/100).toLocaleString('en-US')}
+  function calc(){
+    var a=parseFloat($('amount').value),p=parseInt($('people').value,10);
+    $('per').textContent=(a>0&&p>0)?fmt(a/p):'0';
+  }
+  $('amount').addEventListener('input',calc);
+  $('people').addEventListener('input',calc);
+  [['r1','n1'],['r2','n2']].forEach(function(x){
+    $(x[0]).addEventListener('change',function(e){
+      $(x[1]).textContent=e.target.files[0]?e.target.files[0].name:'';
+    });
+  });
+  function say(el,t,ok){el.textContent=t;el.className='msg '+(ok?'ok':'err')}
+  $('f1').addEventListener('submit',function(e){
+    e.preventDefault();
+    var s=$('spent').value.trim(),a=parseFloat($('amount').value),p=parseInt($('people').value,10);
+    if(!s||!(a>0)||!(p>0)){say($('m1'),'Fill in what was spent, the amount and the number of people.',false);return}
+    say($('m1'),'Saved: '+s+' — '+fmt(a/p)+'tg per person.',true);
+    e.target.reset();$('n1').textContent='';$('per').textContent='0';
+  });
+  $('f2').addEventListener('submit',function(e){
+    e.preventDefault();
+    var i=$('item').value.trim(),c=parseFloat($('cost').value),r=document.querySelector('input[name=cat]:checked');
+    if(!i||!(c>0)||!r){say($('m2'),'Enter the purchase, its cost and pick a category.',false);return}
+    say($('m2'),'Saved: '+i+', '+fmt(c)+'tg ('+r.value+').',true);
+    e.target.reset();$('n2').textContent='';
+  });
+})();
+</script>
+</body>
+</html>
